@@ -36,3 +36,15 @@ footer {
     bottom: 0;
     width: 100%;
 }
+
+.products {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    flex-wrap: wrap;
+}
+
+.product img {
+    max-width: 200px;
+    height: auto;
+}
