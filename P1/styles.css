@@ -48,3 +48,45 @@ footer {
     max-width: 200px;
     height: auto;
 }
+
+/* Nuevos estilos para la página de detalle de producto */
+.product-detail {
+    display: flex;
+    max-width: 900px;
+    margin: 0 auto;
+    gap: 30px;
+    text-align: left;
+}
+
+.product-image {
+    flex: 0 0 40%;
+}
+
+.product-image img {
+    max-width: 100%;
+    height: auto;
+}
+
+.product-info {
+    flex: 0 0 55%;
+}
+
+.price {
+    font-weight: bold;
+    font-size: 1.2em;
+    color: #e63946;
+}
+
+button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+button:hover {
+    background-color: #45a049;
+}
