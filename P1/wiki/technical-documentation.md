@@ -43,4 +43,3 @@ P1
 - Verificar que los archivos estáticos (HTML, CSS, JS, imágenes) se sirven correctamente.
 - Acceder a un recurso inexistente para asegurar que se muestra la página de error.
 - Acceder al endpoint `/ls` y comprobar que se lista el contenido de la carpeta.
-```
