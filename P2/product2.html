@@ -6,7 +6,8 @@
     <title>Coca-Cola - Tienda de Alimentación</title>
     <link rel="stylesheet" href="styles.css">
 </head>
-<body>
+<!-- Se agrega data-product-name para identificar el producto -->
+<body data-product-name="Coca-Cola">
     <header>
         <h1>Tienda de Alimentación Online</h1>
         <nav>
@@ -16,21 +17,19 @@
         </nav>
     </header>
     <main>
-        <h2>Coca-Cola</h2>
+        <h2>Cargando...</h2>
         <div class="product-detail">
             <div class="product-image">
                 <img src="producto2.jpg" alt="Imagen de Coca-Cola en lata">
             </div>
             <div class="product-info">
-                <p>Refresco Coca-Cola en lata de 330ml. El sabor original que todos conocemos y amamos, con su refrescante y característico sabor. Perfecta para acompañar tus comidas o para refrescarte en cualquier momento.</p>
-                <p>Cada lata contiene 330ml y viene perfectamente refrigerada. Pack de 6 unidades.</p>
-                <p class="price">Precio: 4.50€ (pack de 6 latas)</p>
-                <button>Agregar al Carrito</button>
+                <!-- Información del producto se actualizará dinámicamente -->
             </div>
         </div>
     </main>
     <footer>
         <p>&copy; 2025 Tienda de Alimentación Online</p>
     </footer>
+    <script src="product.js"></script>
 </body>
 </html>

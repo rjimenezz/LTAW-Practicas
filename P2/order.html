@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Procesar Pedido - Tienda de Alimentación</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Procesamiento del Pedido</h1>
+        <nav>
+            <a href="index.html">Inicio</a>
+        </nav>
+    </header>
+    <main>
+        <form id="order-form" action="#" method="POST">
+            <label for="username">Usuario:</label>
+            <input type="text" id="username" name="username" required>
+            <br>
+            <label for="direccion">Dirección de Envío:</label>
+            <input type="text" id="direccion" name="direccion" required>
+            <br>
+            <label for="tarjeta">Número de Tarjeta:</label>
+            <input type="text" id="tarjeta" name="tarjeta" required>
+            <br>
+            <!-- Aquí se podría listar los productos del carrito -->
+            <button type="submit">Procesar Pedido</button>
+        </form>
+    </main>
+    <footer>
+        <p>&copy; 2025 Tienda de Alimentación Online</p>
+    </footer>
+</body>
+</html>
