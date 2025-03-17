@@ -1,0 +1,45 @@
+{
+    "usuarios": [
+        {
+            "nombre": "root",
+            "nombre_real": "Administrador",
+            "correo": "root@example.com"
+        },
+        {
+            "nombre": "usuario1",
+            "nombre_real": "Juan Pérez",
+            "correo": "juan.perez@example.com"
+        }
+    ],
+    "productos": [
+        {
+            "nombre": "Galletas Oreo",
+            "descripcion": "Las clásicas galletas Oreo con su delicioso relleno de crema.",
+            "precio": 1.85,
+            "stock": 50
+        },
+        {
+            "nombre": "Coca-Cola",
+            "descripcion": "Refresco Coca-Cola en lata de 330ml, pack de 6 latas.",
+            "precio": 4.50,
+            "stock": 30
+        },
+        {
+            "nombre": "Donuts Caseros",
+            "descripcion": "Donuts caseros elaborados diariamente, pack de 4 unidades.",
+            "precio": 3.95,
+            "stock": 25
+        }
+    ],
+    "pedidos": [
+        {
+            "usuario": "usuario1",
+            "direccion_envio": "Calle Falsa 123, Ciudad",
+            "numero_tarjeta": "1234-5678-9012-3456",
+            "productos": [
+                "Galletas Oreo",
+                "Coca-Cola"
+            ]
+        }
+    ]
+}
