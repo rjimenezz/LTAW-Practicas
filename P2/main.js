@@ -1,12 +1,20 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const productLinks = document.querySelectorAll('.product-link');
+    const urlParams = new URLSearchParams(window.location.search);
+    const username = urlParams.get('username');
 
-    productLinks.forEach(link => {
-        link.addEventListener('click', (event) => {
-            event.preventDefault();
-            const productName = link.getAttribute('data-product-name');
-            alert(`Has hecho clic en ${productName}`);
-            window.location.href = link.href;
-        });
-    });
+    if (username) {
+        fetch('tienda.json')
+            .then(response => response.json())
+            .then(data => {
+                const user = data.usuarios.find(u => u.nombre === username);
+                if (user) {
+                    const welcomeMessage = document.getElementById('welcome-message');
+                    welcomeMessage.innerText = `Estás conectado como: ${user.nombre_real}`;
+                } else {
+                    alert('Usuario no válido');
+                    window.location.href = 'login.html';
+                }
+            })
+            .catch(err => console.error('Error al cargar los datos de usuarios:', err));
+    }
 });
