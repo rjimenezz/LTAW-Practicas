@@ -1,37 +1,37 @@
 {
-    "usuarios": [
-        {
-            "nombre": "root",
-            "nombre_real": "Administrador",
-            "correo": "root@example.com",
-            "password": "admin123"
-        },
-        {
-            "nombre": "usuario1",
-            "nombre_real": "Juan Pérez",
-            "correo": "juan.perez@example.com",
-            "password": "user123"
-        }
-    ],
-    "productos": [
-        {
-            "nombre": "Galletas Oreo",
-            "descripcion": "Las clásicas galletas Oreo con su delicioso relleno de crema.",
-            "precio": 1.85,
-            "stock": 50
-        },
-        {
-            "nombre": "Coca-Cola",
-            "descripcion": "Refresco Coca-Cola en lata de 330ml, pack de 6 latas.",
-            "precio": 4.50,
-            "stock": 30
-        },
-        {
-            "nombre": "Donuts Caseros",
-            "descripcion": "Donuts caseros elaborados diariamente, pack de 4 unidades.",
-            "precio": 3.95,
-            "stock": 25
-        }
-    ],
-    "pedidos": []
+  "usuarios": [
+    {
+      "nombre": "root",
+      "nombre_real": "Administrador",
+      "correo": "root@example.com",
+      "password": "admin123"
+    },
+    {
+      "nombre": "usuario1",
+      "nombre_real": "Juan Pérez",
+      "correo": "juan.perez@example.com",
+      "password": "user123"
+    }
+  ],
+  "productos": [
+    {
+      "nombre": "Galletas Oreo",
+      "descripcion": "Las clásicas galletas Oreo con su delicioso relleno de crema.",
+      "precio": 1.85,
+      "stock": 41
+    },
+    {
+      "nombre": "Coca-Cola",
+      "descripcion": "Refresco Coca-Cola en lata de 330ml, pack de 6 latas.",
+      "precio": 4.5,
+      "stock": 26
+    },
+    {
+      "nombre": "Donuts Caseros",
+      "descripcion": "Donuts caseros elaborados diariamente, pack de 4 unidades.",
+      "precio": 3.95,
+      "stock": 19
+    }
+  ],
+  "pedidos": []
 }

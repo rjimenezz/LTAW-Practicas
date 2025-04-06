@@ -2,8 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Procesar Pedido - Tienda de Alimentación</title>
+    <title>Procesar Pedido - Tienda de Alimentación Online</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -19,34 +18,40 @@
             <ul id="cart-summary"></ul>
             <label for="direccion">Dirección de Envío:</label>
             <input type="text" id="direccion" required>
+            <br>
             <label for="tarjeta">Número de Tarjeta:</label>
             <input type="text" id="tarjeta" required>
+            <br>
             <button type="submit">Finalizar Compra</button>
         </form>
-        <script>
-            document.getElementById('order-form').addEventListener('submit', async (e) => {
-                e.preventDefault();
-                const direccion = document.getElementById('direccion').value;
-                const tarjeta = document.getElementById('tarjeta').value;
-        
-                const response = await fetch('/finalize-order', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ direccion, tarjeta })
-                });
-        
-                const result = await response.json();
-                if (result.success) {
-                    alert('Pedido realizado con éxito');
-                    window.location.href = 'index.html';
-                } else {
-                    alert('Error al procesar el pedido');
-                }
-            });
-        </script>
     </main>
     <footer>
         <p>&copy; 2025 Tienda de Alimentación Online</p>
     </footer>
+    <script>
+        document.getElementById('order-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const direccion = document.getElementById('direccion').value;
+            const tarjeta = document.getElementById('tarjeta').value;
+            const sessionId = localStorage.getItem('sessionId');
+            if (!sessionId) {
+                alert('Debes iniciar sesión para procesar el pedido.');
+                window.location.href = 'login.html';
+                return;
+            }
+            const response = await fetch('/finalize-order', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ sessionId, direccion, tarjeta })
+            });
+            const result = await response.json();
+            if(result.success){
+                alert('Pedido realizado con éxito');
+                window.location.href = 'index.html';
+            } else {
+                alert(result.message || 'Error al procesar el pedido');
+            }
+        });
+    </script>
 </body>
 </html>
