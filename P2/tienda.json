@@ -3,12 +3,14 @@
         {
             "nombre": "root",
             "nombre_real": "Administrador",
-            "correo": "root@example.com"
+            "correo": "root@example.com",
+            "password": "admin123"
         },
         {
             "nombre": "usuario1",
             "nombre_real": "Juan Pérez",
-            "correo": "juan.perez@example.com"
+            "correo": "juan.perez@example.com",
+            "password": "user123"
         }
     ],
     "productos": [
@@ -31,15 +33,5 @@
             "stock": 25
         }
     ],
-    "pedidos": [
-        {
-            "usuario": "usuario1",
-            "direccion_envio": "Calle Falsa 123, Ciudad",
-            "numero_tarjeta": "1234-5678-9012-3456",
-            "productos": [
-                "Galletas Oreo",
-                "Coca-Cola"
-            ]
-        }
-    ]
+    "pedidos": []
 }
