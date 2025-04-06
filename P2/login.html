@@ -18,22 +18,23 @@
   </form>
   <script>
     document.getElementById('login-form').addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const username = document.getElementById('username').value;
-      const password = document.getElementById('password').value;
-      const response = await fetch('/login', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ username, password })
-      });
-      const result = await response.json();
-      if(result.success){
-          alert(`Bienvenido, ${result.nombre_real}`);
-          localStorage.setItem('sessionId', result.sessionId);
-          window.location.href = 'index.html';
-      } else {
-          alert('Usuario o contraseña incorrectos');
-      }
+        e.preventDefault();
+        const username = document.getElementById('username').value;
+        const password = document.getElementById('password').value;
+        const response = await fetch('/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username, password })
+        });
+        const result = await response.json();
+        if (result.success) {
+            // Guarda el identificador usado para loguearse (p.ej.: "usuario1")
+            localStorage.setItem('sessionId', result.sessionId);
+            localStorage.setItem('username', username);
+            window.location.href = 'index.html';
+        } else {
+            alert('Usuario o contraseña incorrectos');
+        }
     });
   </script>
 </body>

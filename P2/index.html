@@ -11,11 +11,10 @@
         <h1>Tienda de Alimentación Online</h1>
         <nav>
             <a href="index.html">Inicio</a>
-            <a href="product1.html">Galletas Oreo</a>
-            <a href="product2.html">Coca-Cola</a>
-            <a href="product3.html">Donuts Caseros</a>
             <a href="login.html">Login</a>
+            <a href="order.html">Mi Carrito</a>
         </nav>
+        <div id="user-info" style="position: absolute; top: 10px; right: 10px; color: white; background: rgba(0,0,0,0.5); padding: 5px 10px; border-radius: 4px;"></div>
     </header>
     <main>
         <h2>Bienvenido a nuestra tienda</h2>
@@ -48,13 +47,15 @@
     <footer>
         <p>&copy; 2025 Tienda de Alimentación Online</p>
     </footer>
+    <!-- Puedes colocar este script justo antes de la etiqueta de cierre </body> -->
     <script>
-      // Si existe sessionId en localStorage, se muestra en el welcome message
-      const sessionId = localStorage.getItem('sessionId');
-      if(sessionId){
-         // Para más validación se podría hacer una petición al servidor, pero aquí se asume que es válido.
-         document.getElementById('welcome-message').innerText = 'Estás conectado.';
-      }
+        const userInfoDiv = document.getElementById('user-info');
+        const username = localStorage.getItem('username');
+        if (username) {
+            userInfoDiv.innerText = `Conectado como: ${username}`;
+        } else {
+            userInfoDiv.innerText = 'No Conectado';
+        }
     </script>
     <script src="main.js"></script>
 </body>

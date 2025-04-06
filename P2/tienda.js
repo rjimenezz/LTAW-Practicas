@@ -89,7 +89,7 @@ const server = http.createServer((req, res) => {
         return;
     }
 
-    // Endpoint: /finalize-order (POST) – finalizar pedido (requiere sessionId)
+    // Endpoint: /finalize-order (POST) – finalizar pedido (ya existente)
     if (req.url === '/finalize-order' && req.method === 'POST') {
         let body = '';
         req.on('data', chunk => body += chunk);
@@ -113,6 +113,19 @@ const server = http.createServer((req, res) => {
             res.writeHead(200, { 'Content-Type': 'application/json' });
             res.end(JSON.stringify({ success: true }));
         });
+        return;
+    }
+
+    // Nuevo Endpoint: /get-cart (GET) – obtener contenido del carrito (requiere sessionId)
+    if (parsedUrl.pathname === '/get-cart' && req.method === 'GET') {
+        const { sessionId } = parsedUrl.query;
+        if (!isAuthenticated(sessionId)) {
+            res.writeHead(401, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify({ success: false, message: 'No autenticado' }));
+            return;
+        }
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ success: true, carrito: carritos[sessionId] }));
         return;
     }
 

@@ -10,12 +10,15 @@
         <h1>Procesamiento del Pedido</h1>
         <nav>
             <a href="index.html">Inicio</a>
+            <!-- Puedes agregar otro enlace a carrito si lo prefieres -->
         </nav>
     </header>
     <main>
+        <h3>Resumen del Carrito</h3>
+        <ul id="cart-summary">
+          <!-- Se cargará dinámicamente el contenido del carrito -->
+        </ul>
         <form id="order-form">
-            <h3>Resumen del Carrito</h3>
-            <ul id="cart-summary"></ul>
             <label for="direccion">Dirección de Envío:</label>
             <input type="text" id="direccion" required>
             <br>
@@ -29,6 +32,33 @@
         <p>&copy; 2025 Tienda de Alimentación Online</p>
     </footer>
     <script>
+        // Cargar el contenido del carrito al iniciar la página
+        window.addEventListener('DOMContentLoaded', async () => {
+            const sessionId = localStorage.getItem('sessionId');
+            if (!sessionId) {
+                alert('Debes iniciar sesión para ver tu carrito.');
+                window.location.href = 'login.html';
+                return;
+            }
+            const response = await fetch(`/get-cart?sessionId=${sessionId}`);
+            const result = await response.json();
+            const cartList = document.getElementById('cart-summary');
+            if(result.success){
+                if(result.carrito.length === 0){
+                    cartList.innerHTML = '<li>El carrito está vacío.</li>';
+                } else {
+                    result.carrito.forEach((item, idx) => {
+                        const li = document.createElement('li');
+                        li.innerText = `${idx + 1}. ${item}`;
+                        cartList.appendChild(li);
+                    });
+                }
+            } else {
+                cartList.innerHTML = '<li>Error al cargar el carrito.</li>';
+            }
+        });
+
+        // Manejar el envío del pedido
         document.getElementById('order-form').addEventListener('submit', async (e) => {
             e.preventDefault();
             const direccion = document.getElementById('direccion').value;
