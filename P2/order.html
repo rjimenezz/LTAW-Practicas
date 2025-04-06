@@ -14,19 +14,36 @@
         </nav>
     </header>
     <main>
-        <form id="order-form" action="#" method="POST">
-            <label for="username">Usuario:</label>
-            <input type="text" id="username" name="username" required>
-            <br>
+        <form id="order-form">
+            <h3>Resumen del Carrito</h3>
+            <ul id="cart-summary"></ul>
             <label for="direccion">Dirección de Envío:</label>
-            <input type="text" id="direccion" name="direccion" required>
-            <br>
+            <input type="text" id="direccion" required>
             <label for="tarjeta">Número de Tarjeta:</label>
-            <input type="text" id="tarjeta" name="tarjeta" required>
-            <br>
-            <!-- Aquí se podría listar los productos del carrito -->
-            <button type="submit">Procesar Pedido</button>
+            <input type="text" id="tarjeta" required>
+            <button type="submit">Finalizar Compra</button>
         </form>
+        <script>
+            document.getElementById('order-form').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const direccion = document.getElementById('direccion').value;
+                const tarjeta = document.getElementById('tarjeta').value;
+        
+                const response = await fetch('/finalize-order', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ direccion, tarjeta })
+                });
+        
+                const result = await response.json();
+                if (result.success) {
+                    alert('Pedido realizado con éxito');
+                    window.location.href = 'index.html';
+                } else {
+                    alert('Error al procesar el pedido');
+                }
+            });
+        </script>
     </main>
     <footer>
         <p>&copy; 2025 Tienda de Alimentación Online</p>
