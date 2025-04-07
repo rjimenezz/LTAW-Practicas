@@ -62,12 +62,14 @@ const server = http.createServer((req, res) => {
         return;
     }
 
-    // Endpoint: /add-to-cart (POST) – agregar producto (requiere sessionId)
+    // ... dentro de tienda.js, en el endpoint /add-to-cart (POST)
     if (req.url === '/add-to-cart' && req.method === 'POST') {
         let body = '';
         req.on('data', chunk => body += chunk);
         req.on('end', () => {
-            const { sessionId, productName } = JSON.parse(body);
+            let { sessionId, productName, quantity } = JSON.parse(body);
+            // Si no se especifica cantidad, por defecto es 1
+            quantity = quantity || 1;
             if (!isAuthenticated(sessionId)) {
                 res.writeHead(401, { 'Content-Type': 'application/json' });
                 res.end(JSON.stringify({ success: false, message: 'No autenticado' }));
@@ -75,15 +77,20 @@ const server = http.createServer((req, res) => {
             }
             const db = loadDB();
             const product = db.productos.find(p => p.nombre === productName);
-            if (product && product.stock > 0) {
-                product.stock--; // decrementa stock
-                carritos[sessionId].push(productName);
+            if (product && product.stock >= quantity) {
+                product.stock -= quantity; // decrementa stock según cantidad
+                // Añade el producto al carrito 'quantity' veces
+                for (let i = 0; i < quantity; i++) {
+                    carritos[sessionId].push(productName);
+                }
                 saveDB(db);
                 res.writeHead(200, { 'Content-Type': 'application/json' });
                 res.end(JSON.stringify({ success: true, carrito: carritos[sessionId] }));
             } else {
                 res.writeHead(400, { 'Content-Type': 'application/json' });
-                res.end(JSON.stringify({ success: false, message: 'Producto sin stock' }));
+                // Si el producto existe pero stock insuficiente, enviar mensaje adecuado
+                const message = product ? 'Cantidad solicitada excede el stock disponible' : 'Producto no encontrado';
+                res.end(JSON.stringify({ success: false, message }));
             }
         });
         return;
