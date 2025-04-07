@@ -1,65 +1,133 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tienda de Alimentación Online</title>
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tienda de Alimentación Online</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <header>
-        <h1>Tienda de Alimentación Online</h1>
-        <nav>
-            <a href="index.html">Inicio</a>
-            <a href="login.html">Login</a>
-            <a href="order.html">Mi Carrito</a>
-        </nav>
-        <!-- Contenedor del estado de sesión -->
-        <div id="user-info" style="position: absolute; top: 10px; right: 10px; color: white; background: rgba(0,0,0,0.5); padding: 5px 10px; border-radius: 4px;"></div>
-        <!-- Botón de Cerrar Sesión -->
-        <button id="logout" style="position: absolute; top: 10px; right: 300px;">Cerrar Sesión</button>    
-    </header>
-    <main>
-        <h2>Bienvenido a nuestra tienda</h2>
-        <p id="welcome-message"></p>
-        <p>Selecciona un producto para ver los detalles:</p>
-        <section class="products">
-            <article class="product">
-                <h3>Galletas Oreo</h3>
-                <img src="producto1.jpg" alt="Galletas Oreo">
-                <div>
-                    <a href="product1.html" class="product-link" data-product-name="Galletas Oreo">Ver Galletas Oreo</a>
-                </div>
-            </article>
-            <article class="product">
-                <h3>Coca-Cola</h3>
-                <img src="producto2.jpg" alt="Coca-Cola">
-                <div>
-                    <a href="product2.html" class="product-link" data-product-name="Coca-Cola">Ver Coca-Cola</a>
-                </div>
-            </article>
-            <article class="product">
-                <h3>Donuts Caseros</h3>
-                <img src="producto3.jpg" alt="Donuts Caseros">
-                <div>
-                    <a href="product3.html" class="product-link" data-product-name="Donuts Caseros">Ver Donuts Caseros</a>
-                </div>
-            </article>
-        </section>
-    </main>
-    <footer>
-        <p>&copy; 2025 Tienda de Alimentación Online</p>
-    </footer>
-    <!-- Puedes colocar este script justo antes de la etiqueta de cierre </body> -->
-    <script>
-        const userInfoDiv = document.getElementById('user-info');
-        const username = localStorage.getItem('username');
-        if (username) {
-            userInfoDiv.innerText = `Conectado como: ${username}`;
-        } else {
-            userInfoDiv.innerText = 'No Conectado';
-        }
-    </script>
-    <script src="main.js"></script>
+  <header style="position: relative;">
+    <h1>Tienda de Alimentación Online</h1>
+    <nav>
+      <a href="index.html">Inicio</a>
+      <a href="login.html">Login</a>
+      <a href="order.html">Mi Carrito</a>
+    </nav>
+    <!-- Contenedor del estado de sesión -->
+    <div id="user-info" style="position: absolute; top: 10px; right: 10px; color: white; background: rgba(0,0,0,0.5); padding: 5px 10px; border-radius: 4px;"></div>
+    <!-- Botón de Cerrar Sesión -->
+    <button id="logout" style="position: absolute; top: 10px; right: 300px;">Cerrar Sesión</button>
+  </header>
+  <main>
+    <h2>Bienvenido a nuestra tienda</h2>
+    <p id="welcome-message"></p>
+    
+    <!-- Caja de búsqueda con autocompletado -->
+    <div id="search-container" style="margin:20px auto; max-width:400px; position: relative;">
+      <input type="text" id="search-box" placeholder="Buscar producto..." style="width: 100%; padding: 8px; box-sizing: border-box;">
+      <button id="search-button" style="margin-top:5px; padding: 8px 12px;">Buscar</button>
+      <div id="autocomplete-list" class="autocomplete-items" style="border:1px solid #ccc; border-top:none; z-index:99; position:absolute; top:40px; left:0; right:0; background: #fff;"></div>
+    </div>
+    
+    <p>Selecciona un producto para ver los detalles:</p>
+    <section class="products">
+      <article class="product">
+        <h3>Galletas Oreo</h3>
+        <img src="producto1.jpg" alt="Galletas Oreo">
+        <div>
+          <a href="product1.html" class="product-link" data-product-name="Galletas Oreo">Ver Galletas Oreo</a>
+        </div>
+      </article>
+      <article class="product">
+        <h3>Coca-Cola</h3>
+        <img src="producto2.jpg" alt="Coca-Cola">
+        <div>
+          <a href="product2.html" class="product-link" data-product-name="Coca-Cola">Ver Coca-Cola</a>
+        </div>
+      </article>
+      <article class="product">
+        <h3>Donuts Caseros</h3>
+        <img src="producto3.jpg" alt="Donuts Caseros">
+        <div>
+          <a href="product3.html" class="product-link" data-product-name="Donuts Caseros">Ver Donuts Caseros</a>
+        </div>
+      </article>
+    </section>
+  </main>
+  <footer>
+    <p>&copy; 2025 Tienda de Alimentación Online</p>
+  </footer>
+  
+  <!-- Actualiza estado de sesión -->
+  <script>
+    const userInfoDiv = document.getElementById('user-info');
+    const username = localStorage.getItem('username');
+    if (username) {
+      userInfoDiv.innerText = `Conectado como: ${username}`;
+    } else {
+      userInfoDiv.innerText = 'No Conectado';
+    }
+  </script>
+  
+  <!-- Script de autocompletado y búsqueda -->
+  <script>
+    // Mapear el nombre del producto a su página correspondiente
+    function getProductPage(productName) {
+      if (productName === 'Galletas Oreo') return 'product1.html';
+      else if (productName === 'Coca-Cola') return 'product2.html';
+      else if (productName === 'Donuts Caseros') return 'product3.html';
+      else return '';
+    }
+
+    const searchBox = document.getElementById('search-box');
+    const autocompleteList = document.getElementById('autocomplete-list');
+
+    async function fetchProducts() {
+      const response = await fetch('tienda.json');
+      const data = await response.json();
+      return data.productos;
+    }
+
+    searchBox.addEventListener('input', async () => {
+      const query = searchBox.value.trim();
+      autocompleteList.innerHTML = "";
+      if (query.length < 3) return;
+      const products = await fetchProducts();
+      const matches = products.filter(p => p.nombre.toLowerCase().includes(query.toLowerCase()));
+      matches.forEach(product => {
+        const itemDiv = document.createElement('div');
+        itemDiv.textContent = product.nombre;
+        itemDiv.style.padding = "8px";
+        itemDiv.style.cursor = "pointer";
+        itemDiv.addEventListener('click', () => {
+          const page = getProductPage(product.nombre);
+          if (page) window.location.href = page;
+        });
+        autocompleteList.appendChild(itemDiv);
+      });
+    });
+
+    document.getElementById('search-button').addEventListener('click', async () => {
+      const query = searchBox.value.trim();
+      if (query.length < 3) {
+        alert("Escribe al menos 3 caracteres para buscar.");
+        return;
+      }
+      const products = await fetchProducts();
+      const matches = products.filter(p => p.nombre.toLowerCase().includes(query.toLowerCase()));
+      if (matches.length === 0) {
+        alert("No se encontró ningún producto que coincida.");
+      } else if (matches.length === 1) {
+        const page = getProductPage(matches[0].nombre);
+        if (page) window.location.href = page;
+      } else {
+        alert("Se encontraron varios productos. Selecciona uno de la lista.");
+      }
+    });
+  </script>
+  
+  <!-- Incluye main.js para funcionalidad adicional (p.ej., manejo de sesión y otros eventos) -->
+  <script src="main.js"></script>
 </body>
 </html>
