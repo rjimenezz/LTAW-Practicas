@@ -1,22 +1,42 @@
+\chat.html -->
 <!DOCTYPE html>
 <html>
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ejemplo 9</title>
+  <title>Chat con Socket.IO</title>
+  
+  <!-- Enlace al archivo CSS externo -->
+  <link rel="stylesheet" href="/chat.css">
 
   <!-- Cargar la biblioteca Socket.IO. Nos la debe entregar el servidor -->
   <script src="/socket.io/socket.io.js"></script>
 
   <!-- Cliente que usa los Sockets.io-->
-  <script src="Ej-09-client.js" defer></script>
+  <script src="cliente.js" defer></script>
 </head>
 
 <body>
-  <h2>Ejemplo 9: Mini-chat</h2>
-  <input type="text" placeholder="Escribe aquí los mensajes..." autocomplete="off" id="msg_entry">
-  <h3>Mensajes recibidos</h3>
-  <p id="display"></p>
+  <h2>Chat en tiempo real</h2>
+  
+  <div class="info">
+    <p>Comandos disponibles:</p>
+    <ul>
+      <li><strong>/help</strong>: Muestra todos los comandos disponibles</li>
+      <li><strong>/list</strong>: Muestra el número de usuarios conectados</li>
+      <li><strong>/hello</strong>: Recibe un saludo del servidor</li>
+      <li><strong>/date</strong>: Muestra la fecha y hora actual</li>
+    </ul>
+  </div>
+  
+  <div class="chat-container">
+    <div id="display"></div>
+  </div>
+  
+  <div>
+    <input type="text" placeholder="Escribe aquí los mensajes..." autocomplete="off" id="msg_entry">
+    <button id="send_button">Enviar</button>
+  </div>
 </body>
 </html>
