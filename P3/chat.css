@@ -1,50 +1,95 @@
 body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 20px;
-    max-width: 800px;
-    margin: 0 auto;
-  }
-  
-  h2 {
-    color: #333;
-  }
-  
-  .chat-container {
-    border: 1px solid #ccc;
-    padding: 15px;
-    border-radius: 5px;
-    margin-bottom: 20px;
-    height: 300px;
-    overflow-y: auto;
-    background-color: #f9f9f9;
-  }
-  
-  #display p {
-    margin: 5px 0;
-    padding: 5px;
-    border-radius: 3px;
-  }
-  
-  input[type="text"] {
-    width: 80%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 3px;
-  }
-  
-  button {
-    padding: 10px 15px;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    border-radius: 3px;
-    cursor: pointer;
-  }
-  
-  .info {
-    background-color: #e7f3fe;
-    border-left: 6px solid #2196F3;
-    padding: 10px;
-    margin: 10px 0;
-  }
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 20px;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+h2 {
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.chat-layout {
+  display: flex;
+  gap: 20px;
+}
+
+.left-panel {
+  flex: 1;
+}
+
+.chat-container {
+  border: 1px solid #ccc;
+  padding: 15px;
+  border-radius: 5px;
+  margin-bottom: 20px;
+  height: 300px;
+  overflow-y: auto;
+  background-color: #f9f9f9;
+}
+
+#display p {
+  margin: 5px 0;
+  padding: 5px;
+  border-radius: 3px;
+}
+
+input[type="text"] {
+  width: 80%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+}
+
+button {
+  padding: 10px 15px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.info {
+  background-color: #e7f3fe;
+  border-left: 6px solid #2196F3;
+  padding: 10px;
+  margin: 10px 0;
+}
+
+/* Estilos para el panel de usuarios */
+.users-panel {
+  width: 200px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 10px;
+  background-color: #f0f0f0;
+}
+
+.users-panel h3 {
+  margin-top: 0;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #ccc;
+  color: #333;
+  text-align: center;
+}
+
+#users-list {
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.user-item {
+  padding: 6px;
+  margin: 3px 0;
+  background-color: #e8e8e8;
+  border-radius: 3px;
+  font-size: 14px;
+}
+
+.user-item.self {
+  font-weight: bold;
+  background-color: #d4edda;
+}

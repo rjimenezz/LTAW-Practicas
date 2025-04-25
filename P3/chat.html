@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -20,24 +19,35 @@
 <body>
   <h2>Chat en tiempo real</h2>
   
-  <div class="info">
-    <p>Comandos disponibles:</p>
-    <ul>
-      <li><strong>/help</strong>: Muestra todos los comandos disponibles</li>
-      <li><strong>/list</strong>: Muestra el número de usuarios conectados</li>
-      <li><strong>/hello</strong>: Recibe un saludo del servidor</li>
-      <li><strong>/date</strong>: Muestra la fecha y hora actual</li>
-      <li><strong>/nick &lt;nuevo_nickname&gt;</strong>: Cambia tu nickname</li>
-    </ul>
-  </div>
-  
-  <div class="chat-container">
-    <div id="display"></div>
-  </div>
-  
-  <div>
-    <input type="text" placeholder="Escribe aquí los mensajes..." autocomplete="off" id="msg_entry">
-    <button id="send_button">Enviar</button>
+  <div class="chat-layout">
+    <div class="left-panel">
+      <div class="info">
+        <p>Comandos disponibles:</p>
+        <ul>
+          <li><strong>/help</strong>: Muestra todos los comandos disponibles</li>
+          <li><strong>/list</strong>: Muestra el número de usuarios conectados</li>
+          <li><strong>/hello</strong>: Recibe un saludo del servidor</li>
+          <li><strong>/date</strong>: Muestra la fecha y hora actual</li>
+          <li><strong>/nick &lt;nuevo_nickname&gt;</strong>: Cambia tu nickname</li>
+        </ul>
+      </div>
+      
+      <div class="chat-container">
+        <div id="display"></div>
+      </div>
+      
+      <div>
+        <input type="text" placeholder="Escribe aquí los mensajes..." autocomplete="off" id="msg_entry">
+        <button id="send_button">Enviar</button>
+      </div>
+    </div>
+    
+    <div class="users-panel">
+      <h3>Usuarios conectados</h3>
+      <div id="users-list">
+        <!-- Los usuarios se mostrarán aquí dinámicamente -->
+      </div>
+    </div>
   </div>
 </body>
 </html>

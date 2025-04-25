@@ -1,4 +1,3 @@
-
 //-- Cargar las dependencias
 const socket = require('socket.io');
 const http = require('http');
@@ -21,6 +20,15 @@ let usuariosConectados = 0;
 
 //-- Almacén de nicknames de usuarios (socketId -> nickname)
 const userNicknames = {};
+
+// Función para actualizar la lista de usuarios conectados en todos los clientes
+function updateUsersList() {
+  // Convertir el objeto de nicknames a un array de nombres
+  const usersList = Object.values(userNicknames);
+  
+  // Enviar la lista actualizada a todos los clientes
+  io.emit('update-users', usersList);
+}
 
 //-------- PUNTOS DE ENTRADA DE LA APLICACION WEB
 //-- Definir el punto de entrada principal de mi aplicación web
@@ -55,6 +63,9 @@ io.on('connect', (socket) => {
   
   // Notificar a todos los demás usuarios que alguien nuevo se conectó
   socket.broadcast.emit("message", `${temporalNick} se ha conectado`);
+  
+  // Actualizar la lista de usuarios para todos
+  updateUsersList();
 
   //-- Evento para cambiar nickname
   socket.on('set-nickname', (nickname) => {
@@ -67,6 +78,9 @@ io.on('connect', (socket) => {
     // Informar al resto de usuarios sobre el cambio de nickname
     socket.broadcast.emit("message", `${oldNickname} ahora se llama ${nickname}`);
     console.log(`${oldNickname} ahora se llama ${nickname}`.yellow);
+    
+    // Actualizar la lista de usuarios para todos
+    updateUsersList();
   });
 
   //-- Evento de desconexión
@@ -84,6 +98,9 @@ io.on('connect', (socket) => {
     
     // Notificar a todos que un usuario se ha desconectado
     io.emit("message", `${nickname} se ha desconectado`);
+    
+    // Actualizar la lista de usuarios para todos
+    updateUsersList();
   });  
 
   //-- Mensaje recibido: Procesarlo según corresponda

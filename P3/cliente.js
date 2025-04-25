@@ -2,6 +2,7 @@
 const display = document.getElementById("display");
 const msg_entry = document.getElementById("msg_entry");
 const send_button = document.getElementById("send_button");
+const usersList = document.getElementById("users-list");
 
 //-- Crear un websocket. Se establece la conexión con el servidor
 const socket = io();
@@ -38,6 +39,28 @@ socket.on("message", (msg) => {
   }
   
   addMessage(msg, isCommand);
+});
+
+// Escuchar actualizaciones de la lista de usuarios
+socket.on('update-users', (users) => {
+  // Limpiar la lista actual
+  usersList.innerHTML = '';
+  
+  // Añadir cada usuario a la lista
+  users.forEach(user => {
+    const userElement = document.createElement('div');
+    userElement.className = 'user-item';
+    
+    // Destacar el nombre del usuario actual
+    if (user === myNickname) {
+      userElement.classList.add('self');
+      userElement.textContent = `${user} (tú)`;
+    } else {
+      userElement.textContent = user;
+    }
+    
+    usersList.appendChild(userElement);
+  });
 });
 
 // Escuchar eventos para cambiar nickname
@@ -80,12 +103,4 @@ msg_entry.onkeydown = (event) => {
 // Mostrar un mensaje cuando se conecta
 window.addEventListener('load', () => {
   console.log("Chat iniciado");
-  
-  // Opcional: solicitar nickname al iniciar
-  setTimeout(() => {
-    const initialNickname = prompt("Introduce tu nickname para el chat:", "");
-    if (initialNickname && initialNickname.trim() !== "") {
-      socket.emit('set-nickname', initialNickname);
-    }
-  }, 1000);
 });
