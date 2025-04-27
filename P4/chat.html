@@ -9,14 +9,20 @@
   <!-- Enlace al archivo CSS externo -->
   <link rel="stylesheet" href="/chat.css">
 
-  <!-- Cargar la biblioteca Socket.IO. Nos la debe entregar el servidor -->
-  <script src="/socket.io/socket.io.js"></script>
+  <!-- Cargamos la versión desde un script externo -->
+  <script src="informacion.js" defer></script>
 
-  <!-- Cliente que usa los Sockets.io-->
+  <!-- Cliente de chat-->
   <script src="cliente.js" defer></script>
 </head>
 
 <body>
+  <div id="version-info" style="padding:10px; background:#eef; border-bottom:1px solid #ccc;">
+    <strong>Versiones:</strong>
+    Node.js: <span id="node-version"></span> |
+    Electron: <span id="electron-version"></span> |
+    Chrome: <span id="chrome-version"></span>
+  </div>
   <h2>Chat en tiempo real</h2>
   
   <div class="chat-layout">
