@@ -1,57 +1,76 @@
-//-- Cargar el módulo de electron
-const electron = require('electron');
+// Importamos módulos necesarios
+const { app, BrowserWindow, ipcMain } = require('electron');  // Ciclo de vida, ventanas IPC
+const os = require('os');           // Para obtener IPs de red
+const path = require('path');       // Para rutas de ficheros
+const express = require('express'); // Servidor HTTP
+const http = require('http');       // HTTP nativo
+const { Server } = require('socket.io'); // WebSockets fácil
 
-console.log("Arrancando electron...");
+let win;                      
+const CHAT_PORT = 8080;      // Puerto donde escuchará el chat
 
-//-- Variable para acceder a la ventana principal
-//-- Se pone aquí para que sea global al módulo principal
-let win = null;
+// ——— 1) Configurar y arrancar el servidor de chat ———
+const chatApp = express();
+const chatServer = http.createServer(chatApp);
+const io = new Server(chatServer);
 
-//-- Punto de entrada. En cuanto electron está listo,
-//-- ejecuta esta función
-electron.app.on('ready', () => {
-    console.log("Evento Ready!");
+// Servir los archivos del cliente de chat (chat.html, cliente.js, chat.css)
+chatApp.use(express.static(path.join(__dirname, 'chat')));
 
-    //-- Crear la ventana principal de nuestra aplicación
-    win = new electron.BrowserWindow({
-        width: 600,   //-- Anchura 
-        height: 600,  //-- Altura
-
-        //-- Permitir que la ventana tenga ACCESO AL SISTEMA
-        webPreferences: {
-          nodeIntegration: true,
-          contextIsolation: false
-        }
-    });
-
-  //-- En la parte superior se nos ha creado el menu
-  //-- por defecto
-  //-- Si lo queremos quitar, hay que añadir esta línea
-  //win.setMenuBarVisibility(false)
-
-  //-- Cargar contenido web en la ventana
-  //-- La ventana es en realidad.... ¡un navegador!
-  //win.loadURL('https://www.urjc.es/etsit');
-
-  //-- Cargar interfaz gráfica en HTML
-  win.loadFile("index.html");
-
-  //-- Esperar a que la página se cargue y se muestre
-  //-- y luego enviar el mensaje al proceso de renderizado para que 
-  //-- lo saque por la interfaz gráfica
-  win.on('ready-to-show', () => {
-    win.webContents.send('print', "MENSAJE ENVIADO DESDE PROCESO MAIN");
-  });
-
-  //-- Enviar un mensaje al proceso de renderizado para que lo saque
-  //-- por la interfaz gráfica
-  win.webContents.send('print', "MENSAJE ENVIADO DESDE PROCESO MAIN");
-
+// Al visitar “/” enviamos directamente el chat.html
+chatApp.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'chat.html'));
 });
 
+// Cuando un cliente Socket.IO se conecta…
+io.on('connect', socket => {
+  // …escuchamos mensajes y los reenviamos a todos los clientes
+  socket.on('message', msg => {
+    const out = `Cliente(${socket.id.substring(0,5)}): ${msg}`;
+    io.emit('message', out);                            
+    if (win) win.webContents.send('server-message', out);
+  });
+});
 
-//-- Esperar a recibir los mensajes de botón apretado (Test) del proceso de 
-//-- renderizado. Al recibirlos se escribe una cadena en la consola
-electron.ipcMain.handle('test', (event, msg) => {
-  console.log("-> Mensaje: " + msg);
+// Iniciar el servidor HTTP + Socket.IO
+chatServer.listen(CHAT_PORT, () => {
+  console.log(`Chat escuchando en http://0.0.0.0:${CHAT_PORT}`);
+});
+
+// ——— 2) Crear la ventana de Electron ———
+app.whenReady().then(() => {
+  win = new BrowserWindow({
+    width: 700,
+    height: 600,
+    webPreferences: {
+      preload: path.join(__dirname, 'preload.js'),
+      contextIsolation: true
+    }
+  });
+  win.loadFile('index.html'); // Carga la UI principal
+});
+
+// ——— 3) IPC: obtener versiones y URL de chat ———
+ipcMain.handle('get-info', () => {
+  // Obtener la primera IPv4 no interna
+  let ip = '127.0.0.1';
+  for (const iface of Object.values(os.networkInterfaces()).flat()) {
+    if (iface.family === 'IPv4' && !iface.internal) {
+      ip = iface.address;
+      break;
+    }
+  }
+  return {
+    node: process.version,                      // Versión de Node.js
+    electron: process.versions.electron,        // Versión de Electron
+    chrome: process.versions.chrome,            // Versión de Chromium
+    chatURL: `http://${ip}:${CHAT_PORT}`        // URL para conectar clientes
+  };
+});
+
+// ——— 4) IPC: emitir mensaje de prueba a todos los clientes ———
+ipcMain.handle('broadcast-test', () => {
+  const testMsg = '*** TEST desde servidor ***';
+  io.emit('message', testMsg);
+  if (win) win.webContents.send('server-message', testMsg);
 });
