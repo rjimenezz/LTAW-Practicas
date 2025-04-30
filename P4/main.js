@@ -14,13 +14,14 @@ const chatApp = express();
 const chatServer = http.createServer(chatApp);
 const io = new Server(chatServer);
 
-// Servir los archivos del cliente de chat (chat.html, cliente.js, chat.css)
-chatApp.use(express.static(path.join(__dirname, 'chat')));
-
-// Al visitar “/” enviamos directamente el chat.html
+// — Servir chat.html en "/" ANTES de los estáticos
 chatApp.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'chat.html'));
 });
+
+// — Servir el resto de archivos (cliente.js, chat.css, socket.io.js…), 
+//    desactivando el index.html por defecto
+chatApp.use(express.static(__dirname, { index: false }));
 
 // Cuando un cliente Socket.IO se conecta…
 io.on('connect', socket => {
