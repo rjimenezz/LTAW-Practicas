@@ -65,7 +65,15 @@ ipcMain.handle('get-info', () => {
     node: process.version,                      // Versión de Node.js
     electron: process.versions.electron,        // Versión de Electron
     chrome: process.versions.chrome,            // Versión de Chromium
-    chatURL: `http://${ip}:${CHAT_PORT}`        // URL para conectar clientes
+    chatURL: `http://${ip}:${CHAT_PORT}`,        // URL para conectar clientes
+
+    arch: process.arch,                  // p.ej. 'x64'
+    platform: os.platform(),            // p.ej. 'win32'
+    hostname: os.hostname(),            // nombre de la máquina
+    homedir: os.homedir(),              // directorio home
+    tmpdir: os.tmpdir(),                // directorio temporal
+    cwd: process.cwd(),                  // directorio de trabajo
+    appPath: app.getAppPath()           // ruta de la app
   };
 });
 

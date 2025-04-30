@@ -1,9 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Chat Server - Electron</title>
-<link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <title>Chat Server - Electron</title>
+  <link rel="stylesheet" href="style.css">
+
+  <!-- 1) Librería para generar QR -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 </head>
 <body>
   <h1>Server Info</h1>
@@ -12,7 +15,19 @@
     <li>Electron: <span id="infoElectron" class="blue"></span></li>
     <li>Chrome: <span id="infoChrome" class="blue"></span></li>
     <li>Chat URL: <span id="infoURL" class="blue"></span></li>
+
+    <!-- NUEVOS CAMPOS -->
+    <li>Arquitectura: <span id="infoArch" class="blue"></span></li>
+    <li>Sistema: <span id="infoPlatform" class="blue"></span></li>
+    <li>Hostname: <span id="infoHost" class="blue"></span></li>
+    <li>Home Dir: <span id="infoHome" class="blue"></span></li>
+    <li>Temp Dir: <span id="infoTemp" class="blue"></span></li>
+    <li>Working Dir: <span id="infoCwd" class="blue"></span></li>
+    <li>App Path: <span id="infoApp" class="blue"></span></li>
   </ul>
+
+  <h2>Código QR para conectar:</h2>
+  <div id="qrcode"></div>
 
   <hr>
   <h2>Mensajes recibidos:</h2>
