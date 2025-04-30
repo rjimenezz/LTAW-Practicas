@@ -30,6 +30,20 @@ io.on('connect', socket => {
     const out = `Cliente(${socket.id.substring(0,5)}): ${msg}`;
     io.emit('message', out);                            
     if (win) win.webContents.send('server-message', out);
+    
+  })
+   // Al conectar, aviso UI Electron del nuevo count
+   if (win) {
+    const count = io.of("/").sockets.size;
+    win.webContents.send('users-updated', count);
+  }
+
+  socket.on('disconnect', () => {
+    // Al desconectar, aviso UI Electron del nuevo count
+    if (win) {
+      const count = io.of("/").sockets.size;
+      win.webContents.send('users-updated', count);
+    }
   });
 });
 
@@ -73,7 +87,9 @@ ipcMain.handle('get-info', () => {
     homedir: os.homedir(),              // directorio home
     tmpdir: os.tmpdir(),                // directorio temporal
     cwd: process.cwd(),                  // directorio de trabajo
-    appPath: app.getAppPath()           // ruta de la app
+    appPath: app.getAppPath(),           // ruta de la app
+
+    usersCount: io.of("/").sockets.size    // nº de sockets conectados
   };
 });
 

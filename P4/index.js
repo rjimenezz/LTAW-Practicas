@@ -1,7 +1,8 @@
 window.addEventListener('DOMContentLoaded', async () => {
   const {
     node, electron, chrome, chatURL,
-    arch, platform, hostname, homedir, tmpdir, cwd, appPath
+    arch, platform, hostname, homedir, tmpdir, cwd, appPath,
+    usersCount
   } = await window.electronAPI.getInfo();
 
   // versiones / URL
@@ -19,6 +20,11 @@ window.addEventListener('DOMContentLoaded', async () => {
   document.getElementById('infoCwd').textContent      = cwd;
   document.getElementById('infoApp').textContent      = appPath;
 
+  document.getElementById('infoUsers').textContent    = usersCount;
+  // Actualizar el nº de usuarios conectados
+  window.electronAPI.onUsersUpdated(count => {
+    document.getElementById('infoUsers').textContent = count;
+  });
   // Generar QR
   new QRCode(document.getElementById('qrcode'), {
     text: chatURL,
