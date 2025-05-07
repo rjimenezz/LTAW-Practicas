@@ -1,47 +1,72 @@
-# Documentación Técnica – Práctica P3: Aplicación Web de Chat
+# Documentación Técnica – Práctica 4: Chat nativo con Electron
 
-## Descripción del Proyecto
-Esta aplicación implementa un chat en tiempo real en el que múltiples usuarios pueden conversar desde sus navegadores. La arquitectura consiste en:
-- **Servidor en Node.js** que utiliza:
-  - El paquete [express](https://expressjs.com/) para servir archivos estáticos (HTML, CSS, JS).
-  - La biblioteca [socket.io](https://socket.io/) para el intercambio de mensajes en tiempo real entre cliente y servidor.
-- **Cliente Web:** Se compone de archivos HTML, CSS y JavaScript que permiten la interacción con el servidor a través de socket.io.
+## 1. Descripción general  
+Esta aplicación convierte el servidor de chat de la Práctica 3 en un cliente nativo Electron.  
+- Arranca un servidor HTTP + Socket.IO en el puerto 8080 para gestionar el chat.  
+- Crea una ventana Electron con una interfaz que muestra información de sistema, la URL de chat (dinámica), un QR para escanearla, el número de usuarios, últimos mensajes y un botón de test.  
+- Los clientes se conectan desde cualquier navegador a `http://<IP-local>:8080`, interactúan con Socket.IO y chatean en tiempo real.
 
-## Especificaciones Funcionales
-- Al conectarse un usuario, se le envía un mensaje de bienvenida (visible solo para él) y se notifica al resto que se ha conectado un nuevo participante.
-- Los mensajes enviados por los usuarios se reenvían a todos los participantes. 
-- El servidor detecta y procesa comandos especiales que comienzan por el carácter `/` de forma exclusiva para el cliente remitente:
-  - `/help`: Muestra la lista de comandos soportados.
-  - `/list`: Devuelve el número de usuarios conectados y la lista de nicknames.
-  - `/hello`: Devuelve un saludo desde el servidor.
-  - `/date`: Devuelve la fecha y hora actual.
-  - `/nick <nuevo_nickname>`: Permite cambiar el nickname del usuario.
+## 2. Estructura de ficheros  
+```
+P4
+├── chat.html            # Cliente web del chat (Práctica 3)
+├── cliente.js           # Lógica cliente Socket.IO
+├── chat.css             # Estilos del cliente web
+├── main.js              # Proceso principal Electron + servidor chat
+├── preload.js           # Puente seguro IPC (contextBridge)
+├── index.html           # Interfaz gráfica Electron
+├── index.js             # Renderer Electron: rellena UI / genera QR / escucha IPC
+├── style.css            # Estilos UI Electron
+├── package.json         # Dependencias y script `npm start`
+└── wiki
+    ├── technical-documentation.md  # Esta documentación
+    └── user-manual.md             # Manual de usuario
+```
 
-## Mejoras Implementadas y Propuestas
-- **Gestión de Nicknames:**  
-  Cada usuario se le asigna un nickname temporal al conectarse, pudiendo luego modificarlo mediante el comando `/nick`. La lista de usuarios conectados se actualiza en tiempo real.  
-  *Mejora: Se ha implementado esta funcionalidad en el servidor (`server.js`) y en el cliente (`cliente.js`) para identificar a cada usuario.*
+## 3. Módulos y dependencias  
+- **Electron**: `app`, `BrowserWindow`, `ipcMain`, `ipcRenderer`  
+- **Express** & **http**: servidor HTTP para servir `chat.html`, `cliente.js`, `chat.css`  
+- **Socket.IO**: WebSockets para mensajería en tiempo real  
+- **os** & **process**: obtención de IP, versiones, ruta de aplicación y directorios  
+- **qrcodejs** (CDN): generación del código QR en el renderer
 
-- **Notificaciones de Conexión/Desconexión:**  
-  El servidor notifica a todos los usuarios cuando alguien se conecta o se desconecta, mostrando mensajes informativos en el chat.
+```jsonc
+// package.json
+"dependencies": {
+  "express": "^5.1.0",
+  "socket.io": "^4.8.1"
+},
+"devDependencies": {
+  "electron": "^35.2.1"
+}
+```
 
-- **Procesamiento de Comandos Especiales:**  
-  Los comandos enviados por los usuarios se procesan de forma local y la respuesta se envía únicamente al usuario que inició el comando.
-  
-- **Propuestas de Mejoras Futuras:**
-  - **Incluir sonidos** al recibir mensajes para mejorar la experiencia de usuario.
-  - **"El usuario está escribiendo..."**: Mostrar una notificación cuando un usuario está escribiendo un mensaje.
-  - **Mensajes Directos:** Habilitar la posibilidad de enviar mensajes privados entre usuarios.
+## 4. Flujo de arranque  
+1. **`npm install`**  
+2. **`npm start`** → lanza `electron .`  
+3. **main.js** crea servidor chat (`chatServer.listen(8080)`) y abre ventana (`win.loadFile('index.html')`).  
+4. `preload.js` expone en `window.electronAPI` las funciones IPC:
+   - `getInfo()` → versiones, IP y `usersCount`
+   - `broadcastTest()` → mensaje de prueba a todos
+   - eventos `server-message` y `users-updated`
+5. **index.js**  
+   - invoca `getInfo()` y pinta todos los `<span id="info…">`  
+   - genera QR con [`new QRCode(...)`](https://github.com/davidshimjs/qrcodejs)  
+   - suscribe `onServerMsg` y `onUsersUpdated` para actualizar la UI  
+   - maneja el botón de test
 
-## Flujo General del Sistema
-1. **Conexión del Usuario:**  
-   El cliente se conecta al servidor por medio de socket.io. El servidor asigna un nickname temporal y envía un mensaje de bienvenida.  
-2. **Intercambio de Mensajes:**  
-   Los usuarios envían mensajes al servidor. Si el mensaje es un comando (empieza por '/'), se procesa y responde solo al remitente; en caso contrario, el mensaje se difunde a todos.
-3. **Gestión de Comandos:**  
-   Los comandos se procesan y devuelven respuestas específicas, manteniendo la privacidad de la respuesta.
 
-## Consideraciones Técnicas
-- **Puerto:** El servidor se ejecuta en el puerto **8080**.
-- **Librerías y Dependencias:**  
-  Entre las dependencias se encuentran `express`, `socket.io` y `colors` (para mejorar la salida del servidor en la consola).
+## 5. Mejoras y extensiones implementadas  
+- **Código QR** para la URL de conexión (móvil → escanea y entra automáticamente)  
+- **Información extra del sistema**: arquitectura, plataforma, hostname, home/temporal/working dirs y ruta de la app  
+- **Conteo en tiempo real** de usuarios en la UI de servidor  
+- **Botón “Enviar Test”** que envía un mensaje global desde el servidor
+
+## 6. Posibles futuras mejoras  
+- Empaquetado multiplataforma (Windows/macOS/Linux)  
+- Autenticación de usuarios y canales privados  
+- “Usuario está escribiendo…”  
+- Sonidos y notificaciones de escritorio  
+- Historial persistente en base de datos  
+
+---

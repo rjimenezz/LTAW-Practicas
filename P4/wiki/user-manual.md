@@ -1,54 +1,50 @@
-# Manual de Usuario – Práctica 3: Chat en Tiempo Real
+# Manual de Usuario – Práctica 4: Chat Server nativo
 
-## Introducción
-Esta aplicación de chat en tiempo real permite que múltiples usuarios se conecten y conversen desde sus navegadores. Cada usuario recibe un mensaje de bienvenida al conectarse, y el sistema notifica al resto de participantes cuando alguien se une o se retira.
+## Requisitos previos  
+- Windows/macOS/Linux con Node ≥ 16  
+- Navegador web moderno para los clientes del chat  
+- Red local donde los dispositivos puedan verse
 
-## Requisitos y Preparación
-- Tener instalado [Node.js](https://nodejs.org/).
-- El proyecto usa [express](https://expressjs.com/) y [socket.io](https://socket.io/), las cuales se especifican en el archivo `package.json`.
-- Para iniciar la aplicación, abra una terminal de Windows, navegue a la carpeta `P3` y ejecute el siguiente comando:
+## Instalación y arranque  
+1. Clona o descarga la carpeta `P4`.  
+2. Abre una terminal en  
+   ```
+   c:\…\LTAW-Practicas\P4
+   ```  
+3. Ejecuta:
+   ```
+   npm install
+   npm start
+   ```
+4. Se abrirá la ventana Electron “Chat Server”. El servidor HTTP+Socket.IO escuchará en el puerto 8080.
+
+## Conectar clientes  
+- Apunta tu navegador (o escanea el QR mostrado) a la **Chat URL** que aparece en la interfaz, p.ej.:  
   ```
-  node server.js
+  http://192.168.1.42:8080
   ```
-- Asegúrese de que el puerto **8080** esté libre.
+- Verás la pantalla web de chat (`chat.html`). Allí escribe tu mensaje y pulsa **Enviar** o **Enter**.
 
-## Cómo Usar la Aplicación
-1. **Acceso a la Aplicación:**
-   - Abra su navegador y diríjase a:  
+## Uso de la interfaz de servidor  
+1. **Información de sistema**  
+   - Node/Electron/Chrome: versiones de runtime  
+   - Arquitectura, plataforma, hostname, directorios (home, temp, cwd) y ruta de la app  
+2. **Chat URL**  
+   - Texto clickable con la dirección IP local + puerto  
+   - Código QR para escanear desde móviles  
+3. **Usuarios conectados**  
+   - Se actualiza en tiempo real al conectar/desconectar un cliente  
+4. **Mensajes recibidos**  
+   - Muestra los últimos mensajes que envían los clientes  
+   - Scroll automático a medida que llegan mensajes nuevos  
+5. **Enviar Test**  
+   - Pulsa **Enviar Test** para que el servidor difunda el mensaje  
      ```
-     http://localhost:8080/
+     *** TEST desde servidor ***
      ```
-2. **Interfaz del Chat:**
-   - Al conectarse, verá un mensaje de bienvenida exclusivo para usted.
-   - Se notificará al resto de usuarios que se ha conectado un nuevo participante.
-   - La ventana principal muestra los mensajes del chat y, a la derecha, la lista actualizada de usuarios conectados.
-   
-3. **Envío y Recepción de Mensajes:**
-   - Escriba su mensaje en el campo de texto y presione el botón "Enviar" o la tecla Enter.
-   - Todos los mensajes enviados serán visibles para todos los usuarios.
+   - Útil para comprobar que la conexión con todos los clientes está activa
 
-4. **Uso de Comandos Especiales:**
-   - Si inicia su mensaje con el carácter `/`, el mensaje se tratará como un comando especial. A continuación se muestra una lista de comandos disponibles:
-     - **/help:** Muestra una lista de comandos soportados.
-     - **/list:** Muestra la cantidad de usuarios conectados junto con sus nicknames.
-     - **/hello:** Recibe un saludo directo del servidor.
-     - **/date:** Muestra la fecha y hora actual.
-     - **/nick <nuevo_nickname>:** Permite cambiar su nickname. Por ejemplo, escribir `/nick Juan` cambiará su nickname a "Juan".
-   - *Nota:* La respuesta a estos comandos solo la verá usted.
+## Cerrar la aplicación  
+- Simplemente cierra la ventana Electron o presiona **Ctrl +C** en la terminal donde ejecutaste `npm start`.
 
-## Mejoras y Sugerencias de Uso
-- **Personalización del Nickname:**  
-  Puede cambiar su nickname utilizando el comando `/nick` para identificarse de forma personalizada.
-  
-- **Notificaciones de Estado:**  
-  El chat actualiza en tiempo real la lista de usuarios conectados, permitiéndole ver con quiénes está chateando.
-
-- **Mejoras Futura (Propuestas):**
-  - Disfrutar de **sonidos** que indiquen la llegada de nuevos mensajes.
-  - Visualización de notificaciones del tipo **"El usuario X está escribiendo..."**.
-  - Enviar mensajes directos de forma privada a otros usuarios.
-
-## Desconexión
-- Para salir del chat, simplemente cierre la pestaña del navegador. El servidor notificará a los demás usuarios de la desconexión.
-
-¡Disfrute de la experiencia de chat en tiempo real!
+¡Y ya está! Con estos pasos tendrás un servidor de chat nativo, fácil de instalar y usar en tu red local.// filepath: c:\Users\raulj\Desktop\Universidad\URJC\Quinto año\Segundo cuatri\LTAW\LTAW-Practicas\P4\wiki\user-manual.md
